@@ -76,21 +76,14 @@ namespace Domotica
             textViewServerConnect = FindViewById<TextView>(Resource.Id.textViewServerConnect);
             textViewChangePinStateValue = FindViewById<TextView>(Resource.Id.textViewChangePinStateValue);
             textViewSensorValue = FindViewById<TextView>(Resource.Id.textViewSensorValue);
-            textViewSensorValue2 = FindViewById<TextView>(Resource.Id.textViewSensorValue2);
-            textViewDebugValue = FindViewById<TextView>(Resource.Id.textViewDebugValue);
             editTextIPAddress = FindViewById<EditText>(Resource.Id.editTextIPAddress);
             editTextIPPort = FindViewById<EditText>(Resource.Id.editTextIPPort);
-
-            // RF buttons/status
-            buttonRf1 = FindViewById<Button>(Resource.Id.rf_button1);
-            textViewRF1 = FindViewById<TextView>(Resource.Id.rf_value1);
-            seekBar1 = FindViewById<SeekBar>(Resource.Id.seekBar1);
 
             UpdateConnectionState(4, "Disconnected");
 
             // Init commandlist, scheduled by socket timer
             commandList.Add(new Tuple<string, TextView>("s", textViewChangePinStateValue));
-            commandList.Add(new Tuple<string, TextView>("a", textViewSensorValue));
+            //commandList.Add(new Tuple<string, TextView>("a", textViewSensorValue));
             //commandList.Add(new Tuple<string, TextView>("b", textViewSensorValue2));
             /*commandList.Add(new Tuple<string, TextView>("1", textViewRF1));
             commandList.Add(new Tuple<string, TextView>("2", textViewRF2));
@@ -107,26 +100,13 @@ namespace Domotica
 
             // timer object, check Arduino state
             // Only one command can be serviced in an timer tick, schedule from list
-            int hzValue = 1000;
-            timerSockets = new System.Timers.Timer() { Interval = hzValue, Enabled = false }; // Interval >= 750
+            timerSockets = new System.Timers.Timer() { Interval = 1000, Enabled = false }; // Interval >= 750
             timerSockets.Elapsed += (obj, args) =>
             {
                 //RunOnUiThread(() =>
                 //{
                 if (socket != null) // only if socket exists
                 {
-                    hzValue = Convert.ToInt32(FindViewById<EditText>(Resource.Id.hzValue).Text);
-                    if (hzValue < 100)
-                    {
-                        hzValue = 100;
-                    }
-                    else if (hzValue > 1000)
-                    {
-                        hzValue = 1000;
-                    }
-
-                    timerSockets.Interval = hzValue;
-
                     // Send a command to the Arduino server on every tick (loop though list)
                     UpdateGUI(executeCommand(commandList[listIndex].Item1), commandList[listIndex].Item2);  //e.g. UpdateGUI(executeCommand("s"), textViewChangePinStateValue);
                     if (++listIndex >= commandList.Count) listIndex = 0;
@@ -255,17 +235,17 @@ namespace Domotica
         {
             RunOnUiThread(() =>
             {
-                if (result == "Dicht")
+                if (result == "OFF")
                 {
                     textview.SetTextColor(Color.Red);
                     result = "Slagboom is dicht";
                 }
-                else if (result == "Open") 
+                else if (result == "ON") 
                 { 
                     textview.SetTextColor(Color.Green); 
                     result = "Slagboom is Open";
                 }
-                else textview.SetTextColor(Color.White);
+                else textview.SetTextColor(Color.Black);
                 textview.Text = result;
             });
         }

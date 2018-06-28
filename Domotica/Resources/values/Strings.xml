@@ -11,7 +11,7 @@
   <string name="ip_port_value">3300</string>
   <string name="button_connect_text">Connect</string>
   <string name="button_pin_state_text">Change State</string>
-  <string name="pin_state_text">Arduino Pin state</string>
+  <string name="pin_state_text">Slagboom state</string>
   <string name="change_pin_state_value">OFF</string>
   <string name="hz">HZ</string>
   <string name="hz_value">1000</string>
@@ -24,5 +24,5 @@
   <string name="sensor_value">-</string>
   <string name="sensor_text2">Close value</string>
   <string name="sensor_value2">-</string>
-  <string name="rf_value1">Slagboom dicht</string>
+  <string name="button_change_text">Slagboom dicht</string>
 </resources>
